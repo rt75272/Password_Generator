@@ -23,21 +23,19 @@ def create_app():
     def index():
         """Render the main page and handle password generation.
 
-        On POST the selected `length` is validated and a new password is
-        generated using `generate_password`. The template receives `password`
-        and `length` for rendering.
+        The form posts back to this route to request a new password length.
         """
         password = ''
         length = 12
+
         if request.method == 'POST':
             try:
-                # Read the requested length and clamp to allowed range.
                 length = int(request.form.get('length', 12))
                 length = max(6, min(length, 32))
             except ValueError:
                 length = 12
-            # Generate the password using the helper below.
             password = generate_password(length)
+
         return render_template('index.html', password=password, length=length)
     return app
 
@@ -65,7 +63,6 @@ if __name__ == '__main__':
     # The big red activation button.
     main()
 
-
 # Expose the WSGI application at module level for servers like gunicorn.
-# This allows a command like `gunicorn app:app` to work.
+# This allows a command like `gunicorn app:app` in Render to work.
 app = create_app()
