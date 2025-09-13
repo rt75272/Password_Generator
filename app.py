@@ -64,3 +64,8 @@ def main():
 if __name__ == '__main__':
     # The big red activation button.
     main()
+
+
+# Expose the WSGI application at module level for servers like gunicorn.
+# This allows a command like `gunicorn app:app` to work.
+app = create_app()
