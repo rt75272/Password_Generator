@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Password Generator</title>
+    <!-- Main stylesheet (serves modern UI and responsive layout) -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <!-- Load Inter font from Google Fonts for a clean UI -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- App container: all visual elements are inside this card -->
+    <div class="container">
+        <!-- Header shows the app title -->
+        <div class="header">
+            <h2>Random Password Generator</h2>
+        </div>
+        <!-- The form posts back to the same route to generate a password -->
+        <form method="post">
+            <div class="controls">
+                <label for="length">Password Length:</label>
+                <input type="number" id="length" name="length" min="6" max="32" value="{{ length }}">
+                <button class="primary" type="submit">Generate</button>
+            </div>
+        </form>
+        <!-- Output area: shows generated password and provides a copy button -->
+        {% if password %}
+            <div class="output">
+                <div id="passwordText" class="password">{{ password }}</div>
+                <button id="copyBtn" class="btn-copy">Copy</button>
+            </div>
+        {% else %}
+            <div class="output">
+                <div class="password" id="passwordText">&nbsp;</div>
+                <button id="copyBtn" class="btn-copy">Copy</button>
+            </div>
+        {% endif %}
+    </div>
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>
