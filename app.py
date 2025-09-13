@@ -18,6 +18,7 @@ def create_app():
     to be served by a WSGI server or used in tests.
     """
     app = Flask(__name__)
+    app.secret_key = 'secure_random_secret_key'
     @app.route('/', methods=['GET', 'POST'])
     def index():
         """Render the main page and handle password generation.
