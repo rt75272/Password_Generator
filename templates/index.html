@@ -5,6 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Password Generator</title>
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='linux_penguin.png') }}">
     <!-- Main stylesheet (serves modern UI and responsive layout) -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
     <!-- Load Inter font from Google Fonts for a clean UI -->
@@ -23,20 +25,44 @@
         <form method="post">
             <div class="controls">
                 <label for="length">Password Length:</label>
-                <input type="number" id="length" name="length" min="6" max="32" value="{{ length }}">
+                <input type="number" id="length" name="length" min="6" max="42" value="{{ length }}">
                 <button class="primary" type="submit">Generate</button>
             </div>
         </form>
-        <!-- Output area: shows generated password and provides a copy button -->
-        {% if password %}
-            <div class="output">
-                <div id="passwordText" class="password">{{ password }}</div>
-                <button id="copyBtn" class="btn-copy">Copy</button>
+        <!-- Output area: shows generated passwords with strength indicators and copy buttons -->
+        {% if passwords %}
+            <div class="passwords-container">
+                <h3>Password Options</h3>
+                <div class="passwords-grid">
+                    {% for pwd_data in passwords %}
+                        <div class="password-option">
+                            <div class="password-header">
+                                <span class="strategy">{{ pwd_data.strategy }}</span>
+                                <span class="strength strength-{{ pwd_data.strength_info.strength }}">
+                                    {{ pwd_data.strength_info.strength.title() }}
+                                </span>
+                            </div>
+                            <div class="password-display">
+                                <div class="password-text" data-password="{{ pwd_data.password }}">{{ pwd_data.password }}</div>
+                                <button class="btn-copy" data-target="{{ loop.index0 }}">Copy</button>
+                            </div>
+                            <div class="strength-details">
+                                <div class="strength-score">Score: {{ pwd_data.strength_info.score }}/100</div>
+                                <div class="strength-criteria">
+                                    {% for detail in pwd_data.strength_info.details %}
+                                        <div class="criteria-item">{{ detail }}</div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
             </div>
         {% else %}
-            <div class="output">
-                <div class="password" id="passwordText">&nbsp;</div>
-                <button id="copyBtn" class="btn-copy">Copy</button>
+            <div class="passwords-container">
+                <div class="no-passwords">
+                    <p>Click "Generate" to create password options</p>
+                </div>
             </div>
         {% endif %}    
     </div>
